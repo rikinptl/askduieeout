@@ -11,29 +11,21 @@
         text-align: center;
         margin-top: 50px;
         padding: 30px;
-        background-image: url('dog.png');
-        background-size: contain;
+        background-image: url('dog.jpeg');
+        background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(255, 148, 148, 0.2);
         position: relative;
-        min-height: 400px;
+        min-height: 500px;
       }
-      .surprise-message::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(255, 255, 255, 0.7);
-        border-radius: 20px;
-        z-index: 1;
+      .surprise-message p {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        font-weight: bold;
       }
-      .surprise-message > * {
-        position: relative;
-        z-index: 2;
+      .selected-date-display {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
       }
       .surprise-message h2 {
         font-size: 36px;

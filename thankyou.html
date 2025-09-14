@@ -13,9 +13,9 @@
       <video id="happJetha" src="happy_jetha.mp4" loop playsinline webkit-playsinline style="width: 280px; height: 280px; object-fit: cover;">
         Your browser does not support the video element.
       </video>
-      <div id="playOverlay" style="position: absolute; top: 0; left: 0; width: 280px; height: 280px; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 14px;">
-        Tap to play video
-      </div>
+      <button id="playOverlay" class="answerButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
+        Yes
+      </button>
     </div>
     <h1>Don't go yet!</h1>
     <button class="button" onclick="location.href='date.html'">
@@ -37,8 +37,8 @@
           console.log('Video started successfully');
         }).catch(function(error) {
           console.log('Video play failed:', error);
-          // Show overlay if video fails to start
-          overlay.style.display = 'flex';
+          // Keep overlay visible if video fails to start
+          overlay.style.display = 'block';
         });
       }
       
@@ -47,57 +47,20 @@
         startVideo();
       });
       
-      // Try to start video on page load
+      // Auto-click the "Yes" button to simulate autoplay
       document.addEventListener('DOMContentLoaded', function() {
-        // Try autoplay first
-        startVideo();
+        // Show the "Yes" button briefly, then auto-click it
+        overlay.style.display = 'block';
         
-        // If autoplay fails, show overlay and auto-tap it
         setTimeout(function() {
-          if (!videoStarted) {
-            overlay.style.display = 'flex';
-            // Auto-tap the overlay after showing it
-            setTimeout(function() {
-              overlay.click(); // Simulate user click
-            }, 500);
-          }
+          overlay.click(); // Auto-click the "Yes" button
+        }, 800); // Brief delay to show the button
+        
+        // Also try direct video play as backup
+        setTimeout(function() {
+          startVideo();
         }, 1000);
       });
-      
-      // Try when page becomes visible
-      document.addEventListener('visibilitychange', function() {
-        if (!document.hidden && !videoStarted) {
-          startVideo();
-          // Also try auto-tap when page becomes visible
-          setTimeout(function() {
-            if (!videoStarted) {
-              overlay.style.display = 'flex';
-              setTimeout(function() {
-                overlay.click();
-              }, 200);
-            }
-          }, 500);
-        }
-      });
-      
-      // Additional auto-tap attempts
-      setTimeout(function() {
-        if (!videoStarted) {
-          overlay.style.display = 'flex';
-          setTimeout(function() {
-            overlay.click();
-          }, 300);
-        }
-      }, 2000);
-      
-      setTimeout(function() {
-        if (!videoStarted) {
-          overlay.style.display = 'flex';
-          setTimeout(function() {
-            overlay.click();
-          }, 200);
-        }
-      }, 3000);
     </script>
   </body>
 </html>

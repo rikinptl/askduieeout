@@ -25,20 +25,6 @@
     </div>
 
     <script>
-      // Function to get URL parameters
-      function getUrlParameter(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
-      }
-
-      // Alternative method to get URL parameters (fallback)
-      function getUrlParameterFallback(name) {
-        const url = window.location.href;
-        const regex = new RegExp('[?&]' + name + '=([^&#]*)');
-        const results = regex.exec(url);
-        return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
-      }
-
       // Function to format date nicely
       function formatDate(dateString) {
         if (!dateString) return 'No date selected';
@@ -55,29 +41,25 @@
 
       // Display the selected date when page loads
       window.addEventListener('DOMContentLoaded', function() {
-        let selectedDateParam = getUrlParameter('selectedDate');
-        
-        // Try fallback method if first method doesn't work
-        if (!selectedDateParam) {
-          selectedDateParam = getUrlParameterFallback('selectedDate');
-        }
-        
         const dateElement = document.getElementById('selectedDate');
         
-        // Debug logging
-        console.log('URL:', window.location.href);
-        console.log('Search params:', window.location.search);
-        console.log('Selected date param:', selectedDateParam);
+        // Get the selected date from localStorage
+        const selectedDate = localStorage.getItem('selectedDate');
         
-        if (selectedDateParam && selectedDateParam !== '') {
-          const formattedDate = formatDate(selectedDateParam);
+        console.log('Retrieved date from localStorage:', selectedDate);
+        
+        if (selectedDate && selectedDate !== '') {
+          const formattedDate = formatDate(selectedDate);
           console.log('Formatted date:', formattedDate);
           dateElement.textContent = formattedDate;
           dateElement.style.fontWeight = 'bold';
           dateElement.style.color = '#ff6b6b';
+          
+          // Clear the stored date after displaying it
+          localStorage.removeItem('selectedDate');
         } else {
-          console.log('No date parameter found');
-          dateElement.textContent = 'No date was selected - URL: ' + window.location.search;
+          console.log('No date found in localStorage');
+          dateElement.textContent = 'No date was selected';
           dateElement.style.color = '#ff9494';
         }
       });

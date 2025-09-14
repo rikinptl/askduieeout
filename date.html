@@ -8,23 +8,33 @@
   </head>
   <body>
     <h1 title="choose a date">Are you free on ...</h1>
-    <form class="form-group" method="GET" action="surprise.html">
+    <form class="form-group" id="dateForm">
       <label>Which day: (select a date)</label>
       <div>
-        <input type="date" name="selectedDate" required />
+        <input type="date" name="selectedDate" id="dateInput" required />
         <button class="button" type="submit">
           Submit
         </button>
       </div>
     </form>
     
-    <!-- Debug: Show what will be submitted -->
     <script>
-      document.querySelector('form').addEventListener('submit', function(e) {
-        const dateInput = document.querySelector('input[name="selectedDate"]');
-        console.log('Form submitting with date:', dateInput.value);
-        console.log('Form action:', this.action);
-        console.log('Form method:', this.method);
+      document.getElementById('dateForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+        
+        const dateInput = document.getElementById('dateInput');
+        const selectedDate = dateInput.value;
+        
+        if (selectedDate) {
+          // Store the selected date in localStorage
+          localStorage.setItem('selectedDate', selectedDate);
+          console.log('Date stored:', selectedDate);
+          
+          // Navigate to surprise page
+          window.location.href = 'surprise.html';
+        } else {
+          alert('Please select a date first!');
+        }
       });
     </script>
   </body>

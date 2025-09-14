@@ -9,12 +9,39 @@
   <body>
     <div id="thankyou"><b>Thank you</b></div>
 
-    <video id="happJetha" src="happy_jetha.mp4" autoplay loop playsinline style="width: 200px; height: 200px; object-fit: cover;">
+    <video id="happJetha" src="happy_jetha.mp4" loop playsinline style="width: 200px; height: 200px; object-fit: cover;">
       Your browser does not support the video element.
     </video>
     <h1>Don't go yet!</h1>
     <button class="button" onclick="location.href='date.html'">
       Click me UWU
     </button>
+
+    <script>
+      // Ensure video plays in Safari
+      document.addEventListener('DOMContentLoaded', function() {
+        const video = document.getElementById('happJetha');
+        
+        // Try to play the video
+        video.play().catch(function(error) {
+          console.log('Autoplay failed:', error);
+          // If autoplay fails, try again after a short delay
+          setTimeout(function() {
+            video.play().catch(function(err) {
+              console.log('Second play attempt failed:', err);
+            });
+          }, 100);
+        });
+        
+        // Also try to play when the page becomes visible
+        document.addEventListener('visibilitychange', function() {
+          if (!document.hidden) {
+            video.play().catch(function(error) {
+              console.log('Play on visibility change failed:', error);
+            });
+          }
+        });
+      });
+    </script>
   </body>
 </html>

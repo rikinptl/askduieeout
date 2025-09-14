@@ -11,9 +11,28 @@
         text-align: center;
         margin-top: 50px;
         padding: 30px;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-image: url('dog.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(255, 148, 148, 0.2);
+        position: relative;
+      }
+      .surprise-message::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 20px;
+        z-index: 1;
+      }
+      .surprise-message > * {
+        position: relative;
+        z-index: 2;
       }
       .surprise-message h2 {
         font-size: 36px;
@@ -64,7 +83,6 @@
     </div>
 
     <div class="surprise-message" id="surpriseMessage">
-      <h2>🎉 Surprise! 🎉</h2>
       <p style="font-size: 28px; color: #e67373; font-weight: bold;">You guessed this date didn't you?</p>
       <div class="selected-date-display" id="selectedDateDisplay"></div>
       <p style="font-size: 20px; color: #ff9494; font-style: italic;">I knew you'd pick this day! 😊</p>

@@ -5,54 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Date</title>
     <link rel="stylesheet" href="css/date.css" />
+    <style>
+      .surprise-message {
+        display: none;
+        text-align: center;
+        margin-top: 50px;
+        padding: 30px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(255, 148, 148, 0.2);
+      }
+      .surprise-message h2 {
+        font-size: 36px;
+        color: #ff6b6b;
+        margin-bottom: 20px;
+      }
+      .selected-date-display {
+        font-size: 24px;
+        color: #e67373;
+        font-weight: bold;
+        background-color: rgba(255, 107, 107, 0.1);
+        padding: 15px 25px;
+        border-radius: 15px;
+        border: 2px solid rgba(255, 107, 107, 0.3);
+        display: inline-block;
+        margin: 20px 0;
+      }
+      .continue-btn {
+        padding: 15px 30px;
+        font-size: 18px;
+        background-color: #ffe3e1;
+        color: #e67373;
+        border-radius: 25px;
+        border: 3px solid #ff9494;
+        cursor: pointer;
+        font-family: "Courier", monospace;
+        font-weight: bold;
+        margin-top: 20px;
+      }
+      .continue-btn:hover {
+        background-color: #ff9494;
+        color: #ffe3e1;
+      }
+    </style>
   </head>
   <body>
-    <h1 title="choose a date">Are you free on ...</h1>
-    <form class="form-group" id="dateForm">
-      <label>Which day: (select a date)</label>
-      <div>
-        <input type="date" name="selectedDate" id="dateInput" required />
-        <button class="button" type="submit">
-          Submit
-        </button>
-      </div>
-    </form>
+    <div id="dateForm">
+      <h1 title="choose a date">Are you free on ...</h1>
+      <form class="form-group">
+        <label>Which day: (select a date)</label>
+        <div>
+          <input type="date" name="selectedDate" id="dateInput" required />
+          <button class="button" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="surprise-message" id="surpriseMessage">
+      <h2>🎉 Surprise! 🎉</h2>
+      <p style="font-size: 28px; color: #e67373; font-weight: bold;">You guessed this date didn't you?</p>
+      <div class="selected-date-display" id="selectedDateDisplay"></div>
+      <p style="font-size: 20px; color: #ff9494; font-style: italic;">I knew you'd pick this day! 😊</p>
+      <button class="continue-btn" onclick="window.location.href='food.html'">Let's continue! 🍽️</button>
+    </div>
     
     <script>
-      document.getElementById('dateForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent default form submission
+      document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
         
         const dateInput = document.getElementById('dateInput');
         const selectedDate = dateInput.value;
         
-        console.log('Form submitted!');
-        console.log('Selected date:', selectedDate);
-        console.log('localStorage available:', typeof(Storage) !== "undefined");
-        
         if (selectedDate) {
-          // Store the selected date in both localStorage and sessionStorage
-          localStorage.setItem('selectedDate', selectedDate);
-          sessionStorage.setItem('selectedDate', selectedDate);
-          console.log('Date stored in localStorage:', selectedDate);
-          console.log('Date stored in sessionStorage:', selectedDate);
-          console.log('Verification - reading back from localStorage:', localStorage.getItem('selectedDate'));
-          console.log('Verification - reading back from sessionStorage:', sessionStorage.getItem('selectedDate'));
+          // Format the date nicely
+          const date = new Date(selectedDate);
+          const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          };
+          const formattedDate = date.toLocaleDateString('en-US', options);
           
-          // Add a small delay to ensure storage is written
-          setTimeout(function() {
-            console.log('About to navigate to surprise.html');
-            window.location.href = 'surprise.html';
-          }, 100);
+          // Show the surprise message
+          document.getElementById('dateForm').style.display = 'none';
+          document.getElementById('selectedDateDisplay').textContent = formattedDate;
+          document.getElementById('surpriseMessage').style.display = 'block';
         } else {
           alert('Please select a date first!');
         }
-      });
-      
-      // Also test localStorage on page load
-      window.addEventListener('load', function() {
-        console.log('Page loaded, localStorage test:', localStorage.getItem('test'));
-        localStorage.setItem('test', 'working');
-        console.log('localStorage test set, reading back:', localStorage.getItem('test'));
       });
     </script>
   </body>

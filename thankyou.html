@@ -52,10 +52,14 @@
         // Try autoplay first
         startVideo();
         
-        // If autoplay fails, show overlay after a delay
+        // If autoplay fails, show overlay and auto-tap it
         setTimeout(function() {
           if (!videoStarted) {
             overlay.style.display = 'flex';
+            // Auto-tap the overlay after showing it
+            setTimeout(function() {
+              overlay.click(); // Simulate user click
+            }, 500);
           }
         }, 1000);
       });
@@ -64,8 +68,36 @@
       document.addEventListener('visibilitychange', function() {
         if (!document.hidden && !videoStarted) {
           startVideo();
+          // Also try auto-tap when page becomes visible
+          setTimeout(function() {
+            if (!videoStarted) {
+              overlay.style.display = 'flex';
+              setTimeout(function() {
+                overlay.click();
+              }, 200);
+            }
+          }, 500);
         }
       });
+      
+      // Additional auto-tap attempts
+      setTimeout(function() {
+        if (!videoStarted) {
+          overlay.style.display = 'flex';
+          setTimeout(function() {
+            overlay.click();
+          }, 300);
+        }
+      }, 2000);
+      
+      setTimeout(function() {
+        if (!videoStarted) {
+          overlay.style.display = 'flex';
+          setTimeout(function() {
+            overlay.click();
+          }, 200);
+        }
+      }, 3000);
     </script>
   </body>
 </html>

@@ -13,9 +13,12 @@
     </button>
     <button class="answerButton" id="noButton">I no no wanna o(╥﹏╥)o</button>
     <br />
-    <img src="cat.gif" alt="cat asking question" class="responsive" />
+    <img src="cat.gif" alt="cat asking question" class="responsive" id="mainImage" />
 
     <script>
+      let noClickCount = 0;
+      const sadJethaGifs = ['sad_jetha.gif', 'sad_jetha1.gif', 'sad_jetha2.gif', 'sad_jetha3.gif'];
+      
       document
         .getElementById("noButton")
         .addEventListener("click", function () {
@@ -25,7 +28,22 @@
           var currentFontSize = parseInt(
             window.getComputedStyle(yesButton).fontSize
           );
-          yesButton.style.fontSize = currentFontSize + 10 + "px"; // Increase font size by 5px
+          yesButton.style.fontSize = currentFontSize + 10 + "px"; // Increase font size by 10px
+          
+          // Show sad Jetha gifs
+          noClickCount++;
+          const mainImage = document.getElementById('mainImage');
+          
+          if (noClickCount <= sadJethaGifs.length) {
+            // Show the corresponding sad Jetha gif
+            mainImage.src = sadJethaGifs[noClickCount - 1];
+            mainImage.alt = "sad Jetha " + noClickCount;
+          } else {
+            // Cycle through the gifs if clicked more than available gifs
+            const gifIndex = (noClickCount - 1) % sadJethaGifs.length;
+            mainImage.src = sadJethaGifs[gifIndex];
+            mainImage.alt = "sad Jetha " + (gifIndex + 1);
+          }
         });
     </script>
   </body>

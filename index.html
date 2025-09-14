@@ -5,46 +5,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Be My Valentine</title>
     <link rel="stylesheet" href="css/valentine.css" />
+    <link rel="stylesheet" href="css/lastpage.css" />
   </head>
   <body>
-    <div id="valentineQuestion"><b>Will you go out on a date with me?</b></div>
-    <button class="answerButton" onclick="location.href='thankyou.html'">
-      Yes
-    </button>
-    <button class="answerButton" id="noButton">I no no wanna o(╥﹏╥)o</button>
-    <br />
-    <img src="cat.gif" alt="cat asking question" class="responsive" id="mainImage" />
+    <!-- Landing Page Content -->
+    <div id="landingPage">
+      <div id="valentineQuestion"><b>Will you go out on a date with me?</b></div>
+      <button class="answerButton" id="yesButton">
+        Yes
+      </button>
+      <button class="answerButton" id="noButton">I no no wanna o(╥﹏╥)o</button>
+      <br />
+      <img src="cat.gif" alt="cat asking question" class="responsive" id="mainImage" />
+    </div>
+
+    <!-- Thank You Page Content (Hidden Initially) -->
+    <div id="thankYouPage" style="display: none;">
+      <div id="thankyou"><b>Thank you</b></div>
+
+      <div style="position: relative; display: inline-block;">
+        <video id="happJetha" src="happy_jetha.mp4" loop playsinline webkit-playsinline style="width: 280px; height: 280px; object-fit: cover;">
+          Your browser does not support the video element.
+        </video>
+        <button id="playOverlay" class="answerButton" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
+          Yes
+        </button>
+      </div>
+      <h1>Don't go yet!</h1>
+      <button class="button" onclick="location.href='date.html'">
+        Click me UWU
+      </button>
+    </div>
 
     <script>
       let noClickCount = 0;
+      let videoStarted = false;
       const sadJethaGifs = ['sad_jetha.gif', 'sad_jetha1.gif', 'sad_jetha3.gif'];
       
-      document
-        .getElementById("noButton")
-        .addEventListener("click", function () {
-          var yesButton = document.querySelector(
-            'button[onclick*="thankyou.html"]'
-          );
-          var currentFontSize = parseInt(
-            window.getComputedStyle(yesButton).fontSize
-          );
-          yesButton.style.fontSize = currentFontSize + 10 + "px"; // Increase font size by 10px
-          
-          // Show sad Jetha gifs
-          noClickCount++;
-          const mainImage = document.getElementById('mainImage');
-          
-          if (noClickCount <= sadJethaGifs.length) {
-            // Show the corresponding sad Jetha gif
-            mainImage.src = sadJethaGifs[noClickCount - 1];
-            mainImage.alt = "sad Jetha " + noClickCount;
-          } else {
-            // Cycle through the gifs if clicked more than available gifs
-            const gifIndex = (noClickCount - 1) % sadJethaGifs.length;
-            mainImage.src = sadJethaGifs[gifIndex];
-            mainImage.alt = "sad Jetha " + (gifIndex + 1);
-          }
+      // Landing page elements
+      const landingPage = document.getElementById('landingPage');
+      const thankYouPage = document.getElementById('thankYouPage');
+      const yesButton = document.getElementById('yesButton');
+      const noButton = document.getElementById('noButton');
+      const mainImage = document.getElementById('mainImage');
+      
+      // Thank you page elements
+      const overlay = document.getElementById('playOverlay');
+      const video = document.getElementById('happJetha');
+      
+      // Function to start video
+      function startVideo() {
+        if (videoStarted) return;
+        
+        video.play().then(function() {
+          videoStarted = true;
+          overlay.style.display = 'none'; // Hide overlay when video starts
+          console.log('Video started successfully');
+        }).catch(function(error) {
+          console.log('Video play failed:', error);
+          // Keep overlay visible if video fails to start
+          overlay.style.display = 'block';
         });
+      }
+      
+      // Yes button click handler
+      yesButton.addEventListener('click', function() {
+        // Hide landing page
+        landingPage.style.display = 'none';
+        // Show thank you page
+        thankYouPage.style.display = 'block';
+        
+        // Auto-start video after a brief delay
+        setTimeout(function() {
+          overlay.style.display = 'block';
+          setTimeout(function() {
+            overlay.click(); // Auto-click the "Yes" button
+          }, 800);
+          setTimeout(function() {
+            startVideo();
+          }, 1000);
+        }, 500);
+      });
+      
+      // No button click handler
+      noButton.addEventListener('click', function () {
+        var currentFontSize = parseInt(
+          window.getComputedStyle(yesButton).fontSize
+        );
+        yesButton.style.fontSize = currentFontSize + 10 + "px"; // Increase font size by 10px
+        
+        // Show sad Jetha gifs
+        noClickCount++;
+        
+        if (noClickCount <= sadJethaGifs.length) {
+          // Show the corresponding sad Jetha gif
+          mainImage.src = sadJethaGifs[noClickCount - 1];
+          mainImage.alt = "sad Jetha " + noClickCount;
+        } else {
+          // Cycle through the gifs if clicked more than available gifs
+          const gifIndex = (noClickCount - 1) % sadJethaGifs.length;
+          mainImage.src = sadJethaGifs[gifIndex];
+          mainImage.alt = "sad Jetha " + (gifIndex + 1);
+        }
+      });
+      
+      // Click handler for video overlay
+      overlay.addEventListener('click', function() {
+        startVideo();
+      });
     </script>
   </body>
 </html>

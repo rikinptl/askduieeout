@@ -10,18 +10,22 @@
   <body>
     <!-- Landing Page Content -->
     <div id="landingPage">
-      <div id="valentineQuestion"><b>Will you go out on a date with me?</b></div>
+      <div id="valentineQuestion"><b>Will you go out on a date with me? 👉🏻👈🏻😜</b></div>
       <button class="answerButton" id="yesButton">
-        Yes
+        Yes 😎
       </button>
-      <button class="answerButton" id="noButton">I no no wanna o(╥﹏╥)o</button>
+      <button class="answerButton" id="noButton">I no no wanna 😭🕶️🤏🏻</button>
       <br />
       <img src="cat.gif" alt="cat asking question" class="responsive" id="mainImage" />
+      
+      <!-- Random Emoji Popups -->
+      <img id="emojiPopup1" class="emoji-popup" src="emoticons /smiley first page .png" alt="smiley emoji" style="display: none;" />
+      <img id="emojiPopup2" class="emoji-popup" src="emoticons /glasses first page .jpeg" alt="glasses emoji" style="display: none;" />
     </div>
 
     <!-- Thank You Page Content (Hidden Initially) -->
     <div id="thankYouPage" style="display: none;">
-      <div id="thankyou"><b>Thank you</b></div>
+      <div id="thankyou"><b>Thank you 🥰</b></div>
 
       <div style="position: relative; display: inline-block;">
         <video id="happJetha" src="happy_jetha.mp4" loop playsinline webkit-playsinline style="width: 280px; height: 280px; object-fit: cover;">
@@ -52,6 +56,42 @@
       // Thank you page elements
       const overlay = document.getElementById('playOverlay');
       const video = document.getElementById('happJetha');
+      
+      // Emoji popup elements
+      const emojiPopup1 = document.getElementById('emojiPopup1');
+      const emojiPopup2 = document.getElementById('emojiPopup2');
+      
+      // Function to show random emoji popup
+      function showRandomEmoji() {
+        const emojis = [emojiPopup1, emojiPopup2];
+        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+        
+        // Random position on screen
+        const x = Math.random() * (window.innerWidth - 150);
+        const y = Math.random() * (window.innerHeight - 150);
+        
+        randomEmoji.style.left = x + 'px';
+        randomEmoji.style.top = y + 'px';
+        randomEmoji.style.display = 'block';
+        
+        // Hide after animation completes
+        setTimeout(() => {
+          randomEmoji.style.display = 'none';
+        }, 2000);
+      }
+      
+      // Start random emoji popups
+      function startEmojiPopups() {
+        // Show first emoji after 2 seconds
+        setTimeout(showRandomEmoji, 2000);
+        
+        // Then show random emojis every 3-6 seconds
+        setInterval(() => {
+          if (Math.random() < 0.7) { // 70% chance to show emoji
+            showRandomEmoji();
+          }
+        }, Math.random() * 3000 + 3000); // Random interval between 3-6 seconds
+      }
       
       // Function to start video
       function startVideo() {
@@ -112,6 +152,11 @@
       // Click handler for video overlay
       overlay.addEventListener('click', function() {
         startVideo();
+      });
+      
+      // Start emoji popups when page loads
+      document.addEventListener('DOMContentLoaded', function() {
+        startEmojiPopups();
       });
     </script>
   </body>

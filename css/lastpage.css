@@ -5,6 +5,19 @@ body {
   background-color: #fff5e4;
   color: #ff9494;
 }
+
+img {
+  height: 400px;
+  width: auto;
+  padding: 10px;
+}
+
+.responsive {
+  height: 400px;
+  width: auto;
+  padding: 10px;
+}
+
 #thankyou {
   font-size: 50px;
   margin-bottom: 20px;

@@ -9,9 +9,14 @@
   <body>
     <div id="thankyou"><b>Thank you</b></div>
 
-    <video id="happJetha" src="happy_jetha.mp4" loop playsinline style="width: 200px; height: 200px; object-fit: cover;">
-      Your browser does not support the video element.
-    </video>
+    <div style="position: relative; display: inline-block;">
+      <video id="happJetha" src="happy_jetha.mp4" loop playsinline webkit-playsinline style="width: 200px; height: 200px; object-fit: cover;">
+        Your browser does not support the video element.
+      </video>
+      <div id="playOverlay" style="position: absolute; top: 0; left: 0; width: 200px; height: 200px; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; color: white; font-size: 14px;">
+        Tap to play video
+      </div>
+    </div>
     <h1>Don't go yet!</h1>
     <button class="button" onclick="location.href='date.html'">
       Click me UWU
@@ -19,39 +24,48 @@
 
     <script>
       let videoStarted = false;
+      const overlay = document.getElementById('playOverlay');
       
       // Function to start video
       function startVideo() {
         if (videoStarted) return;
         const video = document.getElementById('happJetha');
+        
         video.play().then(function() {
           videoStarted = true;
+          overlay.style.display = 'none'; // Hide overlay when video starts
           console.log('Video started successfully');
         }).catch(function(error) {
           console.log('Video play failed:', error);
+          // Show overlay if video fails to start
+          overlay.style.display = 'flex';
         });
       }
       
-      // Try to start video on page load
-      document.addEventListener('DOMContentLoaded', function() {
+      // Click handler for overlay
+      overlay.addEventListener('click', function() {
         startVideo();
       });
       
-      // Start video on any user interaction
-      document.addEventListener('click', startVideo);
-      document.addEventListener('touchstart', startVideo);
-      document.addEventListener('keydown', startVideo);
+      // Try to start video on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        // Try autoplay first
+        startVideo();
+        
+        // If autoplay fails, show overlay after a delay
+        setTimeout(function() {
+          if (!videoStarted) {
+            overlay.style.display = 'flex';
+          }
+        }, 1000);
+      });
       
       // Try when page becomes visible
       document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) {
+        if (!document.hidden && !videoStarted) {
           startVideo();
         }
       });
-      
-      // Additional Safari fix - try after a delay
-      setTimeout(startVideo, 500);
-      setTimeout(startVideo, 1000);
     </script>
   </body>
 </html>

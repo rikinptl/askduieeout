@@ -10,7 +10,8 @@
     <div class="surprise-container">
       <h1>🎉 Surprise! 🎉</h1>
       <p class="surprise-text">You guessed this date didn't you?</p>
-      <p class="sub-text">I knew you'd pick today! 😊</p>
+      <p class="selected-date" id="selectedDate">Loading...</p>
+      <p class="sub-text">I knew you'd pick this day! 😊</p>
       <div class="button-container">
         <button class="continue-button" onclick="location.href='food.html'">
           Let's continue! 🍽️
@@ -22,5 +23,43 @@
         <span class="emoji">💕</span>
       </div>
     </div>
+
+    <script>
+      // Function to get URL parameters
+      function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
+      // Function to format date nicely
+      function formatDate(dateString) {
+        if (!dateString) return 'No date selected';
+        
+        const date = new Date(dateString);
+        const options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        return date.toLocaleDateString('en-US', options);
+      }
+
+      // Display the selected date when page loads
+      window.addEventListener('DOMContentLoaded', function() {
+        const selectedDateParam = getUrlParameter('selectedDate');
+        const dateElement = document.getElementById('selectedDate');
+        
+        if (selectedDateParam) {
+          const formattedDate = formatDate(selectedDateParam);
+          dateElement.textContent = formattedDate;
+          dateElement.style.fontWeight = 'bold';
+          dateElement.style.color = '#ff6b6b';
+        } else {
+          dateElement.textContent = 'No date was selected';
+          dateElement.style.color = '#ff9494';
+        }
+      });
+    </script>
   </body>
 </html>

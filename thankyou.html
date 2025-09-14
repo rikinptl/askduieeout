@@ -18,30 +18,40 @@
     </button>
 
     <script>
-      // Ensure video plays in Safari
-      document.addEventListener('DOMContentLoaded', function() {
+      let videoStarted = false;
+      
+      // Function to start video
+      function startVideo() {
+        if (videoStarted) return;
         const video = document.getElementById('happJetha');
-        
-        // Try to play the video
-        video.play().catch(function(error) {
-          console.log('Autoplay failed:', error);
-          // If autoplay fails, try again after a short delay
-          setTimeout(function() {
-            video.play().catch(function(err) {
-              console.log('Second play attempt failed:', err);
-            });
-          }, 100);
+        video.play().then(function() {
+          videoStarted = true;
+          console.log('Video started successfully');
+        }).catch(function(error) {
+          console.log('Video play failed:', error);
         });
-        
-        // Also try to play when the page becomes visible
-        document.addEventListener('visibilitychange', function() {
-          if (!document.hidden) {
-            video.play().catch(function(error) {
-              console.log('Play on visibility change failed:', error);
-            });
-          }
-        });
+      }
+      
+      // Try to start video on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        startVideo();
       });
+      
+      // Start video on any user interaction
+      document.addEventListener('click', startVideo);
+      document.addEventListener('touchstart', startVideo);
+      document.addEventListener('keydown', startVideo);
+      
+      // Try when page becomes visible
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+          startVideo();
+        }
+      });
+      
+      // Additional Safari fix - try after a delay
+      setTimeout(startVideo, 500);
+      setTimeout(startVideo, 1000);
     </script>
   </body>
 </html>

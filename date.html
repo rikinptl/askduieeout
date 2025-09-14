@@ -25,16 +25,34 @@
         const dateInput = document.getElementById('dateInput');
         const selectedDate = dateInput.value;
         
+        console.log('Form submitted!');
+        console.log('Selected date:', selectedDate);
+        console.log('localStorage available:', typeof(Storage) !== "undefined");
+        
         if (selectedDate) {
-          // Store the selected date in localStorage
+          // Store the selected date in both localStorage and sessionStorage
           localStorage.setItem('selectedDate', selectedDate);
-          console.log('Date stored:', selectedDate);
+          sessionStorage.setItem('selectedDate', selectedDate);
+          console.log('Date stored in localStorage:', selectedDate);
+          console.log('Date stored in sessionStorage:', selectedDate);
+          console.log('Verification - reading back from localStorage:', localStorage.getItem('selectedDate'));
+          console.log('Verification - reading back from sessionStorage:', sessionStorage.getItem('selectedDate'));
           
-          // Navigate to surprise page
-          window.location.href = 'surprise.html';
+          // Add a small delay to ensure storage is written
+          setTimeout(function() {
+            console.log('About to navigate to surprise.html');
+            window.location.href = 'surprise.html';
+          }, 100);
         } else {
           alert('Please select a date first!');
         }
+      });
+      
+      // Also test localStorage on page load
+      window.addEventListener('load', function() {
+        console.log('Page loaded, localStorage test:', localStorage.getItem('test'));
+        localStorage.setItem('test', 'working');
+        console.log('localStorage test set, reading back:', localStorage.getItem('test'));
       });
     </script>
   </body>

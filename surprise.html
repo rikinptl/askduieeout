@@ -39,14 +39,37 @@
         return date.toLocaleDateString('en-US', options);
       }
 
+      // Function to get URL parameters (fallback)
+      function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
       // Display the selected date when page loads
       window.addEventListener('DOMContentLoaded', function() {
+        console.log('Surprise page loaded');
+        console.log('localStorage available:', typeof(Storage) !== "undefined");
+        console.log('sessionStorage available:', typeof(Storage) !== "undefined");
+        
         const dateElement = document.getElementById('selectedDate');
         
-        // Get the selected date from localStorage
-        const selectedDate = localStorage.getItem('selectedDate');
-        
+        // Try multiple methods to get the date
+        let selectedDate = localStorage.getItem('selectedDate');
         console.log('Retrieved date from localStorage:', selectedDate);
+        
+        if (!selectedDate) {
+          selectedDate = sessionStorage.getItem('selectedDate');
+          console.log('Retrieved date from sessionStorage:', selectedDate);
+        }
+        
+        if (!selectedDate) {
+          selectedDate = getUrlParameter('selectedDate');
+          console.log('Retrieved date from URL:', selectedDate);
+        }
+        
+        console.log('All localStorage keys:', Object.keys(localStorage));
+        console.log('All sessionStorage keys:', Object.keys(sessionStorage));
+        console.log('Current URL:', window.location.href);
         
         if (selectedDate && selectedDate !== '') {
           const formattedDate = formatDate(selectedDate);
@@ -57,11 +80,20 @@
           
           // Clear the stored date after displaying it
           localStorage.removeItem('selectedDate');
+          sessionStorage.removeItem('selectedDate');
+          console.log('Date cleared from storage');
         } else {
-          console.log('No date found in localStorage');
-          dateElement.textContent = 'No date was selected';
+          console.log('No date found in any method');
+          dateElement.textContent = 'No date was selected - Check console for details';
           dateElement.style.color = '#ff9494';
         }
+      });
+      
+      // Also try on window load as backup
+      window.addEventListener('load', function() {
+        console.log('Window load event fired');
+        const selectedDate = localStorage.getItem('selectedDate') || sessionStorage.getItem('selectedDate');
+        console.log('Date on window load:', selectedDate);
       });
     </script>
   </body>

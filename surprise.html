@@ -31,6 +31,14 @@
         return urlParams.get(name);
       }
 
+      // Alternative method to get URL parameters (fallback)
+      function getUrlParameterFallback(name) {
+        const url = window.location.href;
+        const regex = new RegExp('[?&]' + name + '=([^&#]*)');
+        const results = regex.exec(url);
+        return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      }
+
       // Function to format date nicely
       function formatDate(dateString) {
         if (!dateString) return 'No date selected';
@@ -47,16 +55,29 @@
 
       // Display the selected date when page loads
       window.addEventListener('DOMContentLoaded', function() {
-        const selectedDateParam = getUrlParameter('selectedDate');
+        let selectedDateParam = getUrlParameter('selectedDate');
+        
+        // Try fallback method if first method doesn't work
+        if (!selectedDateParam) {
+          selectedDateParam = getUrlParameterFallback('selectedDate');
+        }
+        
         const dateElement = document.getElementById('selectedDate');
         
-        if (selectedDateParam) {
+        // Debug logging
+        console.log('URL:', window.location.href);
+        console.log('Search params:', window.location.search);
+        console.log('Selected date param:', selectedDateParam);
+        
+        if (selectedDateParam && selectedDateParam !== '') {
           const formattedDate = formatDate(selectedDateParam);
+          console.log('Formatted date:', formattedDate);
           dateElement.textContent = formattedDate;
           dateElement.style.fontWeight = 'bold';
           dateElement.style.color = '#ff6b6b';
         } else {
-          dateElement.textContent = 'No date was selected';
+          console.log('No date parameter found');
+          dateElement.textContent = 'No date was selected - URL: ' + window.location.search;
           dateElement.style.color = '#ff9494';
         }
       });

@@ -17,5 +17,15 @@
         </button>
       </div>
     </form>
+    
+    <!-- Debug: Show what will be submitted -->
+    <script>
+      document.querySelector('form').addEventListener('submit', function(e) {
+        const dateInput = document.querySelector('input[name="selectedDate"]');
+        console.log('Form submitting with date:', dateInput.value);
+        console.log('Form action:', this.action);
+        console.log('Form method:', this.method);
+      });
+    </script>
   </body>
 </html>

@@ -79,8 +79,9 @@
         const selectedDate = dateInput.value;
         
         if (selectedDate) {
-          // Format the date nicely
-          const date = new Date(selectedDate);
+          // Parse the date string to avoid timezone issues
+          const [year, month, day] = selectedDate.split('-');
+          const date = new Date(year, month - 1, day); // month is 0-indexed
           const options = { 
             weekday: 'long', 
             year: 'numeric', 
